@@ -16,10 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +59,7 @@ public class tabcontent_3 extends Fragment {
     private String[][] textArray = new String[types.length][];
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.tabcontent_3, container, false);
 
         textView = (TextView)view.findViewById(R.id.text_id);
@@ -223,8 +227,74 @@ public class tabcontent_3 extends Fragment {
 //        list.setOnCreateContextMenuListener(listviewLongPress);
 
 
+        final Spinner spinner = (Spinner)view.findViewById(R.id.spinner4);
+        ImageView search = (ImageView)view.findViewById(R.id.search_image);
+
+        //String[] user_abstract = null;
+        ArrayAdapter<String> adapter = null;
 
 
+
+        //String data = sb.toString();
+        //spinner_abstract = data.split("\\!");
+        //adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,spinner_abstract);
+        //设置下拉列表风格
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //将适配器添加到spinner中去
+
+
+        search.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EditText search_edit = (EditText)view.findViewById(R.id.search_edit);
+                        Cursor cursor = mDb.getUnPicIn(search_edit.getText().toString());
+                        //int count = cursor.getInt(0);
+                        ArrayList<Map<String,Object>> user = new ArrayList<Map<String, Object>>();
+                        if(!cursor.isAfterLast()) {
+                            while (cursor.moveToNext()) {
+                                //list = new String[i+1];
+                                Map<String, Object> map = new HashMap<String, Object>();
+                                //sb.append(cursor.getString(cursor.getColumnIndex("username")));
+                                //sb.append("!");
+                                map.put("id", cursor.getString(cursor.getColumnIndex("_id")));
+                                map.put("username", "From:"+cursor.getString(cursor.getColumnIndex("username")));
+                                map.put("pic", cursor.getString(cursor.getColumnIndex("image")));
+                                user.add(map);
+                            }
+                        }
+                        else {
+                            Toast.makeText(v.getContext(), "Not found", Toast.LENGTH_SHORT).show();
+                        }
+                        cursor.close();
+                        UserAdapter Uadapter = new UserAdapter(getActivity(),user);
+                        spinner.setAdapter(Uadapter);
+                        //spinner.setVisibility(View.VISIBLE);//设置默认显示
+                        //spinner.performClick();
+                    }
+                }
+        );
+
+        spinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(getActivity(),Hall_detail.class);
+                        TextView textid = (TextView)view.findViewById(R.id.id);
+                        TextView textfrom = (TextView)view.findViewById(R.id.id_name);
+                        intent.putExtra("clickid",textid.getText().toString());
+                        intent.putExtra("from",textfrom.getText().toString().substring(5));
+                        intent.putExtra("username",username);
+                        startActivity(intent);
+                        Toast.makeText(view.getContext(), "Found", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                }
+        );
         return view;
     }
     public void getAll(){

@@ -10,12 +10,20 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import jeremy.material.R;
 
@@ -50,6 +58,9 @@ public class MainActivity_Login extends Activity {
                 | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         // 隐藏密码为InputType.TYPE_TEXT_VARIATION_PASSWORD，也就是0x81
         // 显示密码为InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD，也就是0x91
+        mDbHelper = new UserDbAdapter(this);
+        mDbHelper.open();
+
 
         cardNumAuto.addTextChangedListener(new TextWatcher() {
 
@@ -121,9 +132,51 @@ public class MainActivity_Login extends Activity {
                 }
             }
         });
+        Spinner spinner = (Spinner)findViewById(R.id.spinner3);
 
-        mDbHelper = new UserDbAdapter(this);
-        mDbHelper.open();
+        String[] user_abstract = null;
+        ArrayAdapter<String> adapter = null;
+        Cursor cursor = mDbHelper.getUnPic();
+        StringBuffer sb = new StringBuffer();
+        ArrayList<Map<String,Object>> user = new ArrayList<Map<String, Object>>();
+        while (cursor.moveToNext()){
+            //list = new String[i+1];
+            Map<String,Object> map = new HashMap<String, Object>();
+            //sb.append(cursor.getString(cursor.getColumnIndex("username")));
+            //sb.append("!");
+            map.put("username","User:"+cursor.getString(cursor.getColumnIndex("username")));
+            map.put("pic",cursor.getString(cursor.getColumnIndex("image")));
+            map.put("id",cursor.getString(cursor.getColumnIndex("_id")));
+            user.add(map);
+        }
+        cursor.close();
+        //String data = sb.toString();
+        //spinner_abstract = data.split("\\!");
+        //adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,spinner_abstract);
+        //设置下拉列表风格
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //将适配器添加到spinner中去
+        UserAdapter Uadapter = new UserAdapter(this,user);
+        spinner.setAdapter(Uadapter);
+        spinner.setVisibility(View.VISIBLE);//设置默认显示
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                // TODO Auto-generated method stub
+                TextView username = (TextView)findViewById(R.id.id_name);
+                cardNumAuto.setText(username.getText().toString().substring(5));
+
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+;
 
     }
 

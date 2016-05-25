@@ -219,5 +219,9 @@ public class ItemDbAdapter {
             c.close();
         return  0;
     }
+    public Cursor getUnPicIn(String itemname) {
+        return mDb.query(DATABASE_TABLE, new String[] { KEY_ROWID, KEY_ITEMNAME,
+                KEY_IMAGE,KEY_USERNAME }, "itemname=?", new String[]{itemname}, null, null, null);
+    }
     }
 

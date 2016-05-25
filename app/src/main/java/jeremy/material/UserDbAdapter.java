@@ -132,6 +132,10 @@ public class UserDbAdapter {
                 KEY_PASSWORD, KEY_NAME, KEY_PHONE, KEY_ITEM, KEY_PN, KEY_EMAIL, KEY_CAREER, KEY_ADDRESS, KEY_IMAGE }, "username=?", new String[] {username}, null, null, null);
     }
 
+    public Cursor getUnPic() {
+        return mDb.query(DATABASE_TABLE, new String[] { KEY_ROWID, KEY_USERNAME,
+                KEY_IMAGE }, null, null, null, null, null);
+    }
     public Cursor getDiary(String username) throws SQLException {
 
         Cursor mCursor =

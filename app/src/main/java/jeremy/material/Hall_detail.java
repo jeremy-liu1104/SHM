@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -101,6 +103,7 @@ public class Hall_detail extends ActionBarActivity {
                                             DialogInterface dialoginterface, int i) {
 
                                        //留给微信API分享
+
                                     }
                                 })
                         .setNegativeButton("No",
