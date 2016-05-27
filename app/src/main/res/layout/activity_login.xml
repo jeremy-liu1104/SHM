@@ -27,7 +27,7 @@
                 android:layout_gravity="center_horizontal" />
 
             <LinearLayout
-                android:layout_width="250dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -47,7 +47,8 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="50dp"
-                            android:orientation="horizontal" >
+                            android:orientation="horizontal"
+                            android:weightSum="1">
 
                             <TextView
                                 android:id="@+id/tv_account"
@@ -63,12 +64,15 @@
                                 android:layout_height="50dp" >
                             </AutoCompleteTextView>
 
-                        </LinearLayout>
+                            <Spinner
+                                android:layout_width="16dp"
+                                android:layout_height="15dp"
+                                android:id="@+id/spinner3"
+                                android:gravity="center"
+                                android:layout_gravity="bottom"
+                                android:layout_marginBottom="6dp" />
 
-                        <Spinner
-                            android:layout_width="match_parent"
-                            android:layout_height="26dp"
-                            android:id="@+id/spinner3" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="259dp"
@@ -84,7 +88,7 @@
 
                             <EditText
                                 android:id="@+id/passwordET"
-                                android:layout_width="fill_parent"
+                                android:layout_width="152dp"
                                 android:layout_height="50dp" >
                             </EditText>
                         </LinearLayout>
@@ -125,7 +129,7 @@
                         android:id="@+id/logBT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="55dp"
                         android:layout_marginRight="10dp"
                         android:text="Submit" >
                     </Button>
